@@ -1,0 +1,75 @@
+# Bài 9: Thiết kế và tối ưu hệ thống lưu trữ ảnh bằng chứng giao hàng (POD) tại FastShip
+
+---
+
+## 1. Phân tích mô hình IPO (Input - Process - Output)
+
+Mô hình xử lý luồng thông tin tính năng chụp và lưu ảnh giao hàng (Proof of Delivery - POD):
+
+* **Input (Đầu vào):**
+  * Mã đơn hàng (Order ID), thời gian giao, tọa độ GPS.
+  * 2 tệp ảnh bằng chứng giao hàng chụp từ ứng dụng Shipper App.
+  * Thông tin thiết bị và cấu hình độ phân giải của máy tài xế.
+
+* **Process (Xử lý):**
+  * **Kiểm tra & Xác thực (Validation):** Kiểm tra định dạng tệp ảnh (.jpg, .png) và kiểm tra dung lượng từng ảnh.
+  * **Xử lý bẫy dữ liệu (Optimization/Compression):** Nếu dung lượng ảnh > 5 MB, hệ thống thực hiện nén ảnh (Client-side compression) trên ứng dụng tài xế hoặc qua Server API để giảm kích thước xuống mức chuẩn (~3 MB) trước khi lưu trữ.
+  * **Định danh & Gắn tag:** Đổi tên tệp theo cấu trúc chuẩn (ví dụ: `POD_[OrderID]_[ImageNo].jpg`) và đính kèm metadata (GPS, timestamp).
+  * **Lưu trữ:** Đẩy tệp ảnh đã nén lên hệ thống lưu trữ đám mây (Cloud Storage/S3) và lưu đường dẫn (URL) vào cơ sở dữ liệu.
+
+* **Output (Đầu ra):**
+  * Lời nhắn xác nhận "Giao hàng thành công" gửi về Shipper App.
+  * Đường dẫn (URL) ảnh POD được cập nhật vào chi tiết đơn hàng trên hệ thống.
+  * Thông báo cập nhật trạng thái đơn hàng kèm ảnh gửi tới khách hàng.
+
+---
+
+## 2. Đề xuất giải pháp xử lý bẫy dữ liệu (Ảnh > 5 MB)
+
+Để tránh tình trạng Server báo đầy hoặc treo hệ thống khi tài xế chụp ảnh độ phân giải cao (> 5 MB), giải pháp áp dụng như sau:
+
+1. **Nén ảnh ngay tại ứng dụng (Client-Side Compression):**
+   * Tích hợp thư viện xử lý ảnh trên Shipper App (Android/iOS).
+   * Ngay sau khi tài xế chụp, ứng dụng tự động giảm độ phân giải/chất lượng ảnh xuống mức phù hợp (đảm bảo rõ nét chi tiết đơn hàng nhưng dung lượng rơi vào khoảng 1.5 MB – 3 MB) trước khi gửi Request lên Server.
+2. **Thiết lập Server Gateway / API Validation:**
+   * Cấu hình giới hạn kích thước nhận tệp (Max Payload Size). 
+   * Nếu ảnh vẫn vượt quá 5 MB khi tải lên, API sẽ tự động kích hoạt Service nén ảnh tự động (Background Worker) trước khi đưa vào bộ nhớ lưu trữ lâu dài.
+
+---
+
+## 3. Tính toán dung lượng lưu trữ thực tế trong 1 tháng
+
+### Các thông số cho trước:
+* Số đơn hàng xử lý mỗi ngày: $50,000\text{ đơn}$
+* Số lượng ảnh mỗi đơn: $2\text{ ảnh/đơn}$
+* Dung lượng trung bình mỗi ảnh: $3\text{ MB}$
+* Thời gian tính toán: $30\text{ ngày}$
+
+---
+
+### Bước 1: Tính tổng dung lượng lưu trữ trong 1 ngày
+$$\text{Số ảnh trong 1 ngày} = 50,000 \times 2 = 100,000\text{ ảnh}$$
+
+$$\text{Dung lượng 1 ngày (MB)} = 100,000 \times 3\text{ MB} = 300,000\text{ MB}$$
+
+$$\text{Dung lượng 1 ngày (GB)} = \frac{300,000\text{ MB}}{1024} \approx 292.97\text{ GB}$$
+
+---
+
+### Bước 2: Tính tổng dung lượng lưu trữ trong 1 tháng (30 ngày)
+$$\text{Dung lượng 30 ngày (MB)} = 300,000\text{ MB} \times 30 = 9,000,000\text{ MB}$$
+
+---
+
+### Bước 3: Quy đổi kết quả sang đơn vị TB (Terabyte)
+
+* **Quy đổi theo hệ nhị phân (Chuẩn CNTT - $1\text{ TB} = 1024 \times 1024\text{ MB} = 1,048,576\text{ MB}$):**
+  $$\text{Dung lượng (TB)} = \frac{9,000,000}{1,048,576} \approx 8.583\text{ TB}$$
+
+* *(Tham khảo) Quy đổi theo hệ thập phân ($1\text{ TB} = 1,000,000\text{ MB}$):*
+  $$\text{Dung lượng (TB)} = \frac{9,000,000}{1,000,000} = 9\text{ TB}$$
+
+---
+
+## 4. Kết luận
+Hệ thống FastShip cần chuẩn bị hạ tầng lưu trữ tối thiểu **~8.58 TB** dung lượng khả dụng mỗi tháng để đáp ứng nhu cầu lưu ảnh bằng chứng giao hàng (POD).
