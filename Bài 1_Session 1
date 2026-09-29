@@ -1,0 +1,31 @@
+## Phần 1: Phân tích vấn đề
+
+1. **Phép tính sai:** Quy đổi $1000$ ảnh bài giảng:
+   $$4\text{ MB} \times 1000 = 4000\text{ MB} = 4\text{ GB} \quad \text{(SAI)}$$
+
+2. **Nguyên nhân:**
+   - **Hệ số chuẩn:** Máy tính dùng hệ cơ số $2$, quy đổi $1\text{ GB} = 1024\text{ MB}$ (chứ không phải $1000\text{ MB}$).
+   - **Thực tế:** $4000\text{ MB} = \frac{4000}{1024} \approx 3.91\text{ GB}$.
+   - **Kết luận:** Sinh viên tính nhầm làm tổng dung lượng dùng bị **thổi phồng** lên $4\text{ GB}$. Do đó, dung lượng trống thực tế trên máy sẽ **nhiều hơn** con số $112\text{ GB}$ tính toán sai ban đầu.
+
+---
+
+## Phần 2: Lời giải đúng
+
+### 1. Bảng tính toán lại (Hệ số 1024)
+
+| Hạng mục | Công thức tính | Dung lượng thực tế |
+| :--- | :--- | :--- |
+| **Bộ công cụ lập trình** | $40\text{ GB} \times 1$ | $40\text{ GB}$ |
+| **1000 ảnh bài giảng** | $\frac{4\text{ MB} \times 1000}{1024}$ | $\approx 3.91\text{ GB}$ ($3.90625\text{ GB}$) |
+| **50 phim Full HD** | $2\text{ GB} \times 50$ | $100\text{ GB}$ |
+| **Tổng dung lượng sử dụng** | $40 + 3.90625 + 100$ | **$\approx 143.91\text{ GB}$** |
+| **Dung lượng còn trống** | $256 - 143.90625$ | **$\approx 112.09\text{ GB}$** |
+
+---
+
+### 2. Kiểm tra lưu thêm 500 bài hát MP3 (5 MB/bài)
+
+- **Nhu cầu:** $\frac{5\text{ MB} \times 500}{1024} = \frac{2500}{1024} \approx 2.44\text{ GB}$.
+- **Kết luận:** **ĐỦ DUNG LƯỢNG**.
+- **Giải thích:** Dung lượng trống hiện tại ($\approx 112.09\text{ GB}$) dư sức chứa $500$ bài hát ($\approx 2.44\text{ GB}$). Lưu xong máy vẫn còn trống khoảng $109.65\text{ GB}$.
