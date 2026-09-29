@@ -1,0 +1,32 @@
+## PHẦN 1: PHÂN TÍCH VẤN ĐỀ
+
+### 1. Chỉ ra điểm sai lệch trong cách phân loại DIKW hiện tại
+
+Báo cáo hiện tại đang bị nhầm lẫn giữa các tầng do đảo lộn bản chất của dữ liệu thô, ngữ cảnh thông tin và quyết định hành động:
+
+* **Tầng Data (Dữ liệu) bị phân loại sai:** Nội dung *“Khách hàng A thường xuyên vắng nhà vào buổi sáng”* đã là một sự thật/mẫu hình có ý nghĩa được đúc kết từ việc phân tích nhiều đơn hàng, không phải dữ liệu thô chưa qua xử lý.
+* **Tầng Information (Thông tin) bị phân loại sai:** Chuỗi ký tự/số `1205, 50000, 0912345678` hoàn toàn là các giá trị thô, rời rạc, chưa có ngữ cảnh hay ý nghĩa rõ ràng (không biết đâu là mã đơn, giá tiền hay số điện thoại). Đây phải thuộc tầng **Data**.
+* **Tầng Knowledge (Tri thức) bị phân loại sai:** Câu *“Đề xuất giao hàng cho khách A vào buổi chiều để tăng tỷ lệ thành công”* là một định hướng hành động/quyết định thực tiễn dựa trên sự hiểu biết. Đây phải thuộc tầng **Wisdom**.
+* **Tầng Wisdom (Sự thông thái) bị phân loại sai:** *“Bảng thống kê số đơn giao trễ trong tháng”* chỉ là dữ liệu đã được tổng hợp, xử lý có ngữ cảnh để trả lời câu hỏi "như thế nào/bao nhiêu". Đây thuộc tầng **Information** hoặc **Knowledge** (rút ra từ chuỗi thông tin), chưa đạt đến tầm đưa ra giải pháp/hành động.
+
+---
+
+### 2. Định nghĩa đúng về các tầng DIKW
+
+* **Data (Dữ liệu):** Các ký hiệu, con số, văn bản hoặc sự kiện thô, rời rạc, chưa qua xử lý và chưa có ngữ cảnh/ý nghĩa cụ thể.
+* **Information (Thông tin):** Dữ liệu đã được gán ngữ cảnh, cấu trúc, xử lý hoặc kết nối để trả lời cho các câu hỏi: *Ai? Cái gì? Ở đâu? Khi nào?*
+* **Knowledge (Tri thức):** Sự hiểu biết, nhận thức được đúc kết từ việc phân tích, so sánh và tổng hợp thông tin nhằm trả lời câu hỏi: *Như thế nào? Tại sao?*
+* **Wisdom (Sự thông thái):** Khả năng vận dụng tri thức để đưa ra quyết định, giải pháp tối ưu hoặc định hướng hành động đúng đắn trong thực tế.
+
+---
+
+## PHẦN 2: HOÀN THIỆN BÀI
+
+### 3. Sắp xếp lại các mệnh đề vào đúng tầng DIKW
+
+| Tầng DIKW | Nội dung chuẩn xác | Giải thích |
+| :--- | :--- | :--- |
+| **Data (Dữ liệu)** | `1205, 50000, 0912345678` | Các con số thô rời rạc, chưa có ngữ cảnh hay ý nghĩa cụ thể. |
+| **Information (Thông tin)** | Bảng thống kê số đơn giao trễ trong tháng. | Dữ liệu đã được gom nhóm, tổng hợp có cấu trúc và ngữ cảnh rõ ràng. |
+| **Knowledge (Tri thức)** | “Khách hàng A thường xuyên vắng nhà vào buổi sáng”. | Rút ra được quy luật/bản chất từ việc phân tích các thông tin lịch sử giao hàng. |
+| **Wisdom (Sự thông thái)** | “Đề xuất giao hàng cho khách A vào buổi chiều để tăng tỷ lệ thành công”. | Đưa ra hành động/quyết định cụ thể dựa trên tri thức đã đúc kết được. |
