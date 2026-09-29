@@ -1,0 +1,53 @@
+## PHẦN 1: PHÂN TÍCH LỖI
+
+### 1. Các nhận định sai trong lời giải
+* **Nhận định 1:** *"Gói mạng 100 Mbps tương đương 100 MB/s."*
+* **Nhận định 2:** *"Do trình duyệt chỉ hiển thị 12.5 MB/s nên nhà mạng chỉ cung cấp 12.5% tốc độ cam kết."*
+* **Nhận định 3:** *"Nếu mạng giảm xuống 40 Mbps, tải tệp 1 GB sẽ mất khoảng 25 giây."*
+
+---
+
+### 2. Nguyên nhân của từng lỗi
+
+#### Lỗi 1: Nhầm lẫn giữa Megabit ($Mbps$) và Megabyte ($MB/s$)
+* **Bản chất:** $1\text{ Byte} = 8\text{ bits}$.
+* **Phân tích:** 
+  * **Mbps** (*Megabit per second*) là đơn vị đo băng thông/tốc độ truyền dẫn đường truyền mạng (viết ký hiệu chữ **b** thường).
+  * **MB/s** (*Megabyte per second*) là đơn vị đo dung lượng tệp tin được truyền tải hoặc tốc độ đọc/ghi dữ liệu thực tế trên trình duyệt, thiết bị (viết ký hiệu chữ **B** hoa).
+  * Lời giải đã nhầm lẫn tỉ lệ $1:1$ giữa hai đơn vị này, trong khi tỉ lệ quy đổi chuẩn là $1\text{ Byte} = 8\text{ bits}$ (tương đương $1\text{ MB/s} = 8\text{ Mbps}$).
+
+#### Lỗi 2: Tính toán sai tỉ lệ đáp ứng của nhà mạng
+* **Phân tích:** Tốc độ lý thuyết tối đa của gói cước $100\text{ Mbps}$ khi quy đổi sang đơn vị $MB/s$ là:
+  $$\frac{100\text{ Mbps}}{8} = 12.5\text{ MB/s}$$
+* **Kết luận:** Trình duyệt hiển thị $12.5\text{ MB/s}$ chính là đạt $100\%$ tốc độ tối đa theo gói cước cam kết, không phải $12.5\%$.
+
+#### Lỗi 3: Nhầm lẫn đơn vị khi tính thời gian tải tệp
+* **Phân tích:**
+  * Dung lượng tệp: $1\text{ GB} = 1024\text{ MB}$.
+  * Băng thông mạng: $40\text{ Mbps} = \frac{40}{8} = 5\text{ MB/s}$.
+  * Thời gian tải thực tế:
+    $$\text{Thời gian} = \frac{\text{Dung lượng tệp (MB)}}{\text{Tốc độ tải thực tế (MB/s)}} = \frac{1024\text{ MB}}{5\text{ MB/s}} = 204.8\text{ giây}$$
+  * Lời giải sai vì lấy trực tiếp $1000 / 40 = 25\text{ giây}$ mà không quy đổi thống nhất đơn vị giữa Megabit ($Mb$) và Gigabyte ($GB$).
+
+---
+
+## PHẦN 2: HOÀN THIỆN BÀI
+
+### 1. Lời giải chuẩn xác
+
+* **Quy đổi tốc độ gói mạng:**
+  $$\text{Tốc độ tải lý thuyết tối đa} = \frac{100\text{ Mbps}}{8} = 12.5\text{ MB/s}$$
+  Trình duyệt hiển thị tốc độ tải $12.5\text{ MB/s}$ chứng tỏ đường truyền mạng đang hoạt động đạt $100\%$ hiệu suất cam kết.
+
+* **Tính thời gian tải tệp 1 GB ở mức băng thông 40 Mbps:**
+  * Đổi tốc độ băng thông sang $MB/s$: 
+    $$\frac{40\text{ Mbps}}{8} = 5\text{ MB/s}$$
+  * Đổi dung lượng tệp $1\text{ GB}$ sang $MB$: 
+    $$1\text{ GB} = 1024\text{ MB}$$
+  * Thời gian tải tệp $1\text{ GB}$:
+    $$\text{Thời gian} = \frac{1024\text{ MB}}{5\text{ MB/s}} = 204.8\text{ giây}\ (\approx 3\text{ phút } 25\text{ giây})$$
+
+---
+
+### 2. Kết luận
+**Nam KHÔNG nên gửi khiếu nại đến nhà mạng.** Nhà mạng đang cung cấp đúng và đủ $100\%$ tốc độ theo hợp đồng gói cước $100\text{ Mbps}$.
